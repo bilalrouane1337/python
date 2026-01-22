@@ -29,7 +29,6 @@ class SecurePlant:
     
     def current_infos(self):
         print(f"Current plant: {self.name} ({self.get_height()}cm, {self.get_age()} days)")
-    
 
 print("=== Garden Security System ===")
 
