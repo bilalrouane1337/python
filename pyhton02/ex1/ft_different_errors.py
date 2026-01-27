@@ -2,6 +2,8 @@
 
 def garden_operations():
 
+    """Demonstrate common Python errors"""
+    
     my_dict = {"name": "brouane"}
     
     try:
@@ -35,10 +37,11 @@ def garden_operations():
         print(my_dict["age"])
         my_file = open("missing.txt")
     except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError) as key_error:
-        print(f"Caught KeyError: {key_error}\n")
+        print(f"Caught an error, but program continues!\n")
     
 
 def test_error_types():
+    """Run all error demonstrations"""
     print("=== Garden Error Types Demo ===\n")
     garden_operations()
     print("All error types tested successfully!")

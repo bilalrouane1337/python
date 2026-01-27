@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-def check_temperature(temp_str: str):
+def check_temperature(temp_str: str) -> None:
+
+    """Validate a temperature string and return an integer temperature"""
 
     print("Testing temperature:", temp_str)
+
     try:
         temp = int(temp_str)
     except ValueError:

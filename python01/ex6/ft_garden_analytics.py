@@ -5,6 +5,11 @@ class Plant:
         self.name = name.capitalize()
         self.height = height
         self.age = age
+    
+    def grow(self):
+        self.height += 1
+        print(f"{self.name} grew 1cm")
+
 
 class FloweringPlant(Plant):
     def __init__(self, name, height, age, color):
@@ -15,18 +20,28 @@ class FloweringPlant(Plant):
         print(f"{self.name} is blooming beautifully!")
 
     def get_info(self) -> str:
-        print(f"{self.name} (Flower): {self.height}cm, {self.age} days, {self.color} color")
+        return f"{self.name} (Flower): {self.height}cm, {self.age} days, {self.color} color"
 
 class PrizeFlower(FloweringPlant):
-    def __init__(self, name, height, age, prize_points):
-        super().__init__(name, height, age)
+    def __init__(self, name, height, age, color, prize_points):
+        super().__init__(name, height, age, color)
         self.prize_points = prize_points
 
 
 class GardenManager:
 
-    def create_garden_network():
+    def __init__(self, name):
+        self.name = name
+
+    @classmethod
+    def create_garden_network(cls):
         ...
 
     class GardenStats:
         ...
+
+if __name__ == "__main__":
+
+    alice = GardenManager("Alice")
+
+    alice.create_garden_network("Oak Tree")
