@@ -21,7 +21,7 @@ class SecurePlant:
         """Safely update the plant's height.
         Rejects negative values."""
 
-        if new_height > 0:
+        if new_height >= 0:
             self._height = new_height
             print(f"Height updated: {new_height}cm [OK]")
         else:
@@ -34,7 +34,7 @@ class SecurePlant:
         """Safely update the plant's age.
         Rejects negative values."""
 
-        if new_age > 0:
+        if new_age >= 0:
             self._age = new_age
             print(f"Age updated: {new_age} days [OK]")
         else:
@@ -50,19 +50,12 @@ class SecurePlant:
         """Return the plant's current age."""
         return self._age
 
-    def current_infos(self) -> None:
-        """Print the plant's current information."""
-        print(
-            f"Current plant: {self.name} "
-            f"({self.get_height()}cm, {self.get_age()} days)"
-        )
-
 
 if __name__ == "__main__":
 
     print("=== Garden Security System ===")
 
-    rose = SecurePlant("rose", 25, 30)
+    rose = SecurePlant("rose", 0, 0)
     print(f"Plant created: {rose.name}")
 
     rose.set_height(25)
@@ -72,4 +65,7 @@ if __name__ == "__main__":
     rose.set_height(-5)
 
     print()
-    rose.current_infos()
+    print(
+            f"Current plant: {rose.name} "
+            f"({rose.get_height()}cm, {rose.get_age()} days)"
+        )

@@ -8,6 +8,6 @@ if __name__ == "__main__":
 
     print("=== Welcome to My Garden ===")
     print("Plant:", name)
-    print("Height: " + str(height) + "cm")
+    print(f"Height: {height}cm")
     print(f"Age: {age} days")
     print("\n=== End of Program ===")

@@ -16,13 +16,13 @@ class Plant:
         self.height = height
         self.plant_age = plant_age
 
-    def grow(self) -> None:
+    def grow(self, height) -> None:
         """Increase the plant's height by 1 cm."""
-        self.height += 1
+        self.height += height
 
-    def age(self) -> None:
+    def age(self, days) -> None:
         """Increase the plant's age by 1 day."""
-        self.plant_age += 1
+        self.plant_age += days
 
     def get_info(self) -> str:
         """Return a formatted string with plant information."""
@@ -40,9 +40,8 @@ if __name__ == "__main__":
     print("=== Day 1 ===")
     print(rose.get_info())
 
-    for day in range(1, 7):
-        rose.grow()
-        rose.age()
+    rose.grow(6)
+    rose.age(6)
 
     print("=== Day 7 ===")
     print(rose.get_info())
