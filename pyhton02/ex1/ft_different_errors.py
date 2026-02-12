@@ -1,57 +1,46 @@
 #!/usr/bin/env python3
 
-def garden_operations(error_type):
-    """
-    Raise a specific error based on the given error type.
-    param error_type: Type of error to trigger
-    """
-    my_dict = {"plant": "tomato"}
-
-    if error_type == "value":
-        print("Testing ValueError...")
-        int("abc")
-
-    elif error_type == "zero":
-        print("Testing ZeroDivisionError...")
-        10 / 0
-
-    elif error_type == "file":
-        print("Testing FileNotFoundError...")
-        open("missing.txt")
-
-    elif error_type == "key":
-        print("Testing KeyError...")
-        print(my_dict["missing_plant"])
-
-
 def test_error_types():
 
-    """Run tests for different exception types."""
+    """Demonstrate different error handling."""
 
-    print("=== Garden Error Types Demo ===")
+    print("=== Garden Error Types Demo ===\n")
 
-    for error in ["value", "zero", "file", "key"]:
-        try:
-            garden_operations(error)
+    try:
+        print("Testing ValueError...")
+        int("abc")
+    except ValueError:
+        print(f"Caught ValueError: invalid literal for int()\n")
 
-        except ValueError as caught_error:
-            print(f"Caught ValueError: {caught_error}")
+    try:
+        print("Testing ZeroDivisionError...")
+        10 / 0
+    except ZeroDivisionError as err:
+        print(f"Caught ZeroDivisionError: {err}\n")
 
-        except ZeroDivisionError as caught_error:
-            print(f"Caught ZeroDivisionError: {caught_error}")
+    try:
+        print("Testing FileNotFoundError...")
+        file_name = "missing.txt"
+        open(file_name, "r")
+    except FileNotFoundError:
+        print(f"Caught FileNotFoundError: No such file '{file_name}'\n")
 
-        except FileNotFoundError as caught_error:
-            print(f"Caught FileNotFoundError: {caught_error}")
-
-        except KeyError as caught_error:
-            print(f"Caught KeyError: {caught_error}")
+    try:
+        print("Testing KeyError...")
+        data = {}
+        print(data["missing_plant"])
+    except KeyError as err:
+        print(f"Caught KeyError: {err}\n")
 
     try:
         print("Testing multiple errors together...")
         int("abc")
-
+        10 / 0
+        open("missing.txt", "r")
+        data = {}
+        print(data["missing_plant"])
     except (ValueError, ZeroDivisionError, FileNotFoundError, KeyError):
-        print("Caught an error, but program continues!")
+        print("Caught an error, but program continues!\n")
 
     print("All error types tested successfully!")
 

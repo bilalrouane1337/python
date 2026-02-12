@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
 def water_plants(plant_list):
-    """
-    Water each plant in the given list.
 
+    """Water each plant in the given list.
     param plant_list: List of plant names
-    raises ValueError: If an invalid plant is found
-    """
+    raises ValueError: If an invalid plant is found"""
+
     print("Opening watering system")
 
     for plant in plant_list:
         if not plant:
-            raise ValueError("Error: Cannot water invalid plant!")
+            raise ValueError(f"Error: Cannot water {plant} - invalid plant!")
         print(f"Watering {plant}")
 
 
@@ -32,7 +31,7 @@ def test_watering_system():
     print("Watering completed successfully!")
 
     print("\nTesting with error...")
-    plants = ["tomato", ""]
+    plants = ["tomato", None]
     try:
         water_plants(plants)
     except ValueError as error:

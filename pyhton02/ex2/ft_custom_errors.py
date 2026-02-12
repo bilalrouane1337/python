@@ -1,51 +1,44 @@
 #!/usr/bin/env python3
 
 class GardenError(Exception):
-    """
-    Base exception for all garden-related errors.
-    """
+
+    """Base exception for all garden-related errors."""
 
 
 class PlantError(GardenError):
-    """
-    Exception raised for plant-related problems.
-    """
 
-    def __init__(self, name):
-        message = f"The {name} plant is wilting!"
-        super().__init__(message)
-
+    """Exception raised for plant-related problems."""
 
 class WaterError(GardenError):
-    """
-    Exception raised for watering-related problems.
-    """
 
-    def __init__(self):
-        message = "Not enough water in the tank!"
-        super().__init__(message)
-
+    """Exception raised for watering-related problems."""
 
 def main():
-    """
-    Demonstrate custom garden error handling.
-    """
+
+    """Demonstrate custom garden error handling."""
+
     print("=== Custom Garden Errors Demo ===\n")
 
     try:
         print("Testing PlantError...")
-        raise PlantError("tomato")
+        raise PlantError("The tomato plant is wilting!")
     except PlantError as error:
         print(f"Caught PlantError: {error}\n")
 
     try:
         print("Testing WaterError...")
-        raise WaterError()
+        raise WaterError("Not enough water in the tank!")
     except WaterError as error:
         print(f"Caught WaterError: {error}\n")
 
     print("Testing catching all garden errors...")
-    for error in [PlantError("tomato"), WaterError()]:
+
+    errors = [
+        PlantError("The tomato plant is wilting!"),
+        WaterError("Not enough water in the tank!")
+        ]
+
+    for error in errors:
         try:
             raise error
         except GardenError as caught_error:
