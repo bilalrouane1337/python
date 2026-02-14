@@ -1,6 +1,5 @@
-try:
-    x = 10 / 0  # This raises ZeroDivisionError
-except ValueError:
-    print("Caught a ValueError!")
-finally:
-    print("This always runs!")
+Stack (variable references)       Heap (objects)
+----------------------------------------------
+fruits ---------------------->  list object
+                                    ├─ index 0 -> "apple"
+                                    └─ index 1 -> "banana"

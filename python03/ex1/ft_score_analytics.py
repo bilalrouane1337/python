@@ -17,7 +17,7 @@ if __name__ == "__main__":
         except ValueError as error:
             print(error)
         else:
-            total_players = len(sys.argv) - 1
+            total_players = len(scores)
             total_scores = sum(scores)
             high_scores = max(scores)
             low_scores = min(scores)
@@ -29,4 +29,3 @@ if __name__ == "__main__":
             print(f"High score: {high_scores}")
             print(f"Low score: {low_scores}")
             print(f"Score range: {high_scores - low_scores}")
-        
