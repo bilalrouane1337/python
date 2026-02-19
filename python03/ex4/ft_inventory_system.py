@@ -66,130 +66,129 @@ data = {
     }
 }
 
-print("=== Player Inventory System ===\n")
+if __name__ == "__main__":
 
-user = "alice"
+    print("=== Player Inventory System ===\n")
 
-print(f"=== {user.capitalize()}'s Inventory ===")
+    user = "alice"
+    user_inventory = data.get('players', {}).get(user, {})
 
-user_items = data.get('players', {}).get(user, {}).get('items', {})
-inventory_value = data.get('players', {}).get(user, {}).get('total_value', 0)
-item_count = data.get('players', {}).get(user, {}).get('item_count', 0)
-catalog = data['catalog']
-items_types = {}
-
-
-# for item, count in alice_inventory.items():
-
-#     print(f"{item} ({catalog[item]['type']}, {catalog[item]['rarity']}): "
-#           f"{count}x @ {catalog[item]['value']} gold each "
-#           f"= {count * catalog[item]['value']} gold")
-
-#     if catalog[item]['type'] in items_types:
-#         items_types[catalog[item]['type']] += 1
-#     else:
-#         items_types[catalog[item]['type']] = 1
-
-# print(f"\nInventory value: {inventory_value} gold")
-# print(f"Item count: {item_count} items")
-# print("Categories: ", end="")
-
-# dict_len = len(items_types)
-
-# for item, count in items_types.items():
-#     print(f"{item}({count})", end="")
-#     if dict_len > 1:
-#         print(",", end=" ")
-#     dict_len -= 1
-
-fromm, to, item, count = "alice" , "bob", "pixel_sword", 1
-
-print(f"\n\n=== Transaction: {fromm.capitalize()} gives {to.capitalize()} {count} {item} ===")
-
-from_items = data.get('players', {}).get(fromm, {}).get('items', {})
-to_items = data.get('players', {}).get(to, {}).get('items', {})
-how_many = from_items.get(item, -1)
-
-def update_inventory():
-
-    from_inventory = data.get('players', {}).get(fromm, {})
-    from_items = from_inventory.get('items', {})
-    to_inventory = data.get('players', {}).get(to, {})
-    to_items = to_inventory.get('items', {})
-    how_many = from_items.get(item, -1)
-
-    print(from_items)
-    print(to_items)
-
-    if how_many != -1:
-        if how_many - count >= 0:
-
-            if how_many - count > 0:
-                from_items[item] -= count
-            else:
-                del from_items[item]
+    if user_inventory:
             
-            from_inventory['total_value'] -= catalog[item]['value'] * count
+        print(f"=== {user.capitalize()}'s Inventory ===")
 
-            if item in to_items.items():
-                to_items[item] += count
+        user_items = user_inventory.get('items', {})
+        catalog = data['catalog']
+        items_types = {}
+
+        for item, count in user_items.items():
+
+            print(f"{item} ({catalog[item]['type']}, {catalog[item]['rarity']}): "
+                f"{count}x @ {catalog[item]['value']} gold each "
+                f"= {count * catalog[item]['value']} gold")
+
+            if catalog[item]['type'] in items_types:
+                items_types[catalog[item]['type']] += 1
             else:
-                to_items[item] = count
+                items_types[catalog[item]['type']] = 1
 
-            to_inventory['total_value'] += catalog[item]['value'] * count
-            print("Transaction successful!")
-            
+        inventory_value = user_inventory.get('total_value', 0)
+        item_count = user_inventory.get('item_count', 0)
+
+        print(f"\nInventory value: {inventory_value} gold")
+        print(f"Item count: {item_count} items")
+        print("Categories:", ", ".join(f"{item}({count})"for item, count in items_types.items()))
+
+        from_p, to_p, item, count = "alice" , "bob", "quantum_ring", 1
+
+        print(f"\n=== Transaction: {from_p.capitalize()} gives {to_p.capitalize()} {count} {item} ===")
+
+        from_inventory = data.get('players', {}).get(from_p, {})
+        from_items = from_inventory.get('items', {})
+        to_inventory = data.get('players', {}).get(to_p, {})
+        to_items = to_inventory.get('items', {})
+
+        if from_items and to_items:
+
+            how_many = from_items.get(item, -1)
+
+            def update_inventory():
+
+                if how_many != -1:
+
+                    if how_many - count >= 0:
+
+                        if how_many - count > 0:
+                            from_items[item] -= count
+                        else:
+                            del from_items[item]
+                        
+                        from_inventory['total_value'] -= catalog[item]['value'] * count
+                        from_inventory['item_count'] -= count
+
+                        if item in to_items.items():
+                            to_items[item] += count
+                        else:
+                            to_items[item] = count
+
+                        to_inventory['total_value'] += catalog[item]['value'] * count
+                        to_inventory['item_count'] += count
+
+                        print("Transaction successful!\n")
+                        
+                    else:
+                        print(f"Alice have only {how_many} of {item}")
+                        print("Transaction failed!\n")
+                else:
+                    print(f"Alice do not have the item '{item}'")
+                    print("Transaction failed!\n")
+
+            update_inventory()
+
+            print("=== Updated Inventories ===")
+
+            print(f"Alice {item}: {from_items.get(item, 0)}")
+            print(f"Bob {item}: {to_items.get(item, 0)}")
         else:
-            print(f"Alice have only {how_many} of {item}")
+            print(f"One or Both of the players '{from_p}' or '{to_p}' are not found")
+            print("Transaction failed!\n")
+
+
+        print("=== Inventory Analytics ===")
+
+        values_dict = {}
+        items_dict = {}
+
+        to_get_key = data['players']
+
+        for key, value in to_get_key.items():
+
+            values_dict[key] = to_get_key[key]['total_value']
+            items_dict[key] = to_get_key[key]['item_count']
+
+        max_p_v = max(values_dict, key=values_dict.get)
+        max_value = values_dict[max_p_v]
+
+        max_p_c = max(items_dict, key=items_dict.get)
+        max_count = items_dict[max_p_c]
+
+        print(f"Most valuable player: {max_p_v} ({max_value} gold)")
+        print(f"Most items: {max_p_c} ({max_count} items)")
+
+        rarest_items = set()
+
+        for key, value in to_get_key.items():
+
+            for s_key in value['items']:
+
+                if catalog[s_key]['rarity'] == "rare":
+
+                    if s_key not in rarest_items:
+                        rarest_items.add(s_key)
+
+        rarest_items_string = ", ".join(rarest_items)
+
+        print(f"Rarest items: {rarest_items_string}")
+
     else:
-        print(f"Alice do not have the item '{item}'")
-
-    print(from_items)
-    print(to_items)
-
-update_inventory()
-
-# print("=== Updated Inventories ===")
-
-print(f"Alice potions: {from_items.get(item, 0)}")
-print(f"Bob potions: {to_items.get(item, 0)}")
-
-from_value = data.get('players', {}).get(fromm, {}).get('total_value', 0)
-to_value = data.get('players', {}).get(to, {}).get('total_value', 0)
-
-if from_value > to_value:
-    print(f"Most valuable player: {fromm} ({from_value} gold)")
-else:
-    print(f"Most valuable player: {to} ({to_value} gold)")
-
-from_count = data.get('players', {}).get(fromm, {}).get('item_count', 0)
-to_count = data.get('players', {}).get(to, {}).get('item_count', 0)
-
-if from_count > to_count:
-    print(f"Most items: {fromm} ({from_count} items)")
-else:
-    print(f"Most items: {to} ({to_count} items)")
-
-# if alice_items > bob_items:
-#     print(f"Most items: Alice ({alice_value} items)")
-# else:
-#     print(f"Most items: Bob ({bob_value} items)")
-
-# rarest_items = []
-
-# for key in alice_inventory:
-#     if alice_inventory[key]["rarity"] == "rare":
-#         rarest_items.append(key)
-
-# for key in bob_inventory:
-#     if bob_inventory[key]["rarity"] == "rare":
-#         rarest_items.append(key)
-
-# items_len = len(rarest_items)
-
-# print("Rarest items:", end=" ")
-# for item in rarest_items:
-#     print(item, end="")
-#     if items_len > 1:
-#         print(", ", end="")
-#     items_len -= 1
+        print(f"The player {user} is not found")

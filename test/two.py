@@ -1,3 +1,7 @@
-dic = {"a": 1, "b": 5}
+s = set()
 
-dic.update()
+s.add(5)
+s.add(5)
+s.add(5)
+
+print(s)
