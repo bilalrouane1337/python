@@ -29,9 +29,9 @@ def parse_coordinates(coord_string: str) -> tuple[int, int, int]:
     """Parse a coordinate string formatted as 'x,y,z' or '(x,y,z)'
     into a tuple of integers."""
 
-    parts = coord_string.strip().split(",")
+    x, y, z = coord_string.split(",")
 
-    return tuple(int(num) for num in parts)
+    return int(x), int(y), int(z)
 
 
 if __name__ == "__main__":
@@ -41,6 +41,7 @@ if __name__ == "__main__":
     zero_position = (0, 0, 0)
 
     if len(sys.argv) > 1:
+
         try:
 
             if len(sys.argv) == 4 or len(sys.argv) == 2:
@@ -87,33 +88,35 @@ if __name__ == "__main__":
 
     else:
 
-        player_position = create_position(10, 20, 5)
-        print(f"Position created: {player_position}")
-
-        dist = distance_3d(zero_position, player_position)
-
-        print(
-            f"Distance between {zero_position} "
-            f"and {player_position}: {dist:.2f}\n"
-        )
-
-        coord_text = "3,4,0"
-        print(f"Parsing coordinates: \"{coord_text}\"")
-        player_position = parse_coordinates(coord_text)
-        print(f"Parsed position: {player_position}")
-
-        dist2 = distance_3d(zero_position, player_position)
-
-        print(
-            f"Distance between {zero_position} "
-            f"and {player_position}: {dist2:.1f}\n"
-        )
-
-        invalid_text = "abc,def,ghi"
-        print(f"Parsing invalid coordinates: \"{invalid_text}\"")
-
         try:
+
+            player_position = create_position(10, 20, 5)
+            print(f"Position created: {player_position}")
+
+            dist = distance_3d(zero_position, player_position)
+
+            print(
+                f"Distance between {zero_position} "
+                f"and {player_position}: {dist:.2f}\n"
+            )
+
+            coord_text = "3,4,0"
+            print(f"Parsing coordinates: \"{coord_text}\"")
+            player_position = parse_coordinates(coord_text)
+            print(f"Parsed position: {player_position}")
+
+            dist2 = distance_3d(zero_position, player_position)
+
+            print(
+                f"Distance between {zero_position} "
+                f"and {player_position}: {dist2:.1f}\n"
+            )
+
+            invalid_text = "abc,def,ghi"
+            print(f"Parsing invalid coordinates: \"{invalid_text}\"")
+
             parse_coordinates(invalid_text)
+
         except Exception as e:
             print(f"Error parsing coordinates: {e}")
             print(

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 data = {
     'players': {
         'alice': {
@@ -71,42 +73,58 @@ if __name__ == "__main__":
     print("=== Player Inventory System ===\n")
 
     user = "alice"
-    user_inventory = data.get('players', {}).get(user, {})
+    user_inventory = data.get("players", {}).get(user, {})
 
     if user_inventory:
-            
+
         print(f"=== {user.capitalize()}'s Inventory ===")
 
-        user_items = user_inventory.get('items', {})
-        catalog = data['catalog']
+        user_items = user_inventory.get("items", {})
+        catalog = data["catalog"]
         items_types = {}
 
         for item, count in user_items.items():
 
-            print(f"{item} ({catalog[item]['type']}, {catalog[item]['rarity']}): "
-                f"{count}x @ {catalog[item]['value']} gold each "
-                f"= {count * catalog[item]['value']} gold")
+            item_type = catalog[item]["type"]
+            rarity = catalog[item]["rarity"]
+            value = catalog[item]["value"]
+            total_item_value = count * value
 
-            if catalog[item]['type'] in items_types:
-                items_types[catalog[item]['type']] += 1
+            print(
+                f"{item} ({item_type}, {rarity}): "
+                f"{count}x @ {value} gold each "
+                f"= {total_item_value} gold"
+            )
+
+            if item_type in items_types:
+                items_types[item_type] += 1
             else:
-                items_types[catalog[item]['type']] = 1
+                items_types[item_type] = 1
 
-        inventory_value = user_inventory.get('total_value', 0)
-        item_count = user_inventory.get('item_count', 0)
+        inventory_value = user_inventory.get("total_value", 0)
+        item_count = user_inventory.get("item_count", 0)
 
         print(f"\nInventory value: {inventory_value} gold")
         print(f"Item count: {item_count} items")
-        print("Categories:", ", ".join(f"{item}({count})"for item, count in items_types.items()))
+        print(
+            "Categories:",
+            ", ".join(
+                f"{item}({count})"
+                for item, count in items_types.items()
+            ),
+        )
 
-        from_p, to_p, item, count = "alice" , "bob", "quantum_ring", 1
+        from_p, to_p, item, count = "alice", "bob", "quantum_ring", 1
 
-        print(f"\n=== Transaction: {from_p.capitalize()} gives {to_p.capitalize()} {count} {item} ===")
+        print(
+            f"\n=== Transaction: {from_p.capitalize()} gives "
+            f"{to_p.capitalize()} {count} {item} ==="
+        )
 
-        from_inventory = data.get('players', {}).get(from_p, {})
-        from_items = from_inventory.get('items', {})
-        to_inventory = data.get('players', {}).get(to_p, {})
-        to_items = to_inventory.get('items', {})
+        from_inventory = data.get("players", {}).get(from_p, {})
+        from_items = from_inventory.get("items", {})
+        to_inventory = data.get("players", {}).get(to_p, {})
+        to_items = to_inventory.get("items", {})
 
         if from_items and to_items:
 
@@ -122,25 +140,29 @@ if __name__ == "__main__":
                             from_items[item] -= count
                         else:
                             del from_items[item]
-                        
-                        from_inventory['total_value'] -= catalog[item]['value'] * count
-                        from_inventory['item_count'] -= count
 
-                        if item in to_items.items():
+                        from_inventory["total_value"] -= (
+                            catalog[item]["value"] * count
+                        )
+                        from_inventory["item_count"] -= count
+
+                        if item in to_items:
                             to_items[item] += count
                         else:
                             to_items[item] = count
 
-                        to_inventory['total_value'] += catalog[item]['value'] * count
-                        to_inventory['item_count'] += count
+                        to_inventory["total_value"] += (
+                            catalog[item]["value"] * count
+                        )
+                        to_inventory["item_count"] += count
 
                         print("Transaction successful!\n")
-                        
+
                     else:
-                        print(f"Alice have only {how_many} of {item}")
+                        print(f"Alice has only {how_many} of {item}")
                         print("Transaction failed!\n")
                 else:
-                    print(f"Alice do not have the item '{item}'")
+                    print(f"Alice does not have the item '{item}'")
                     print("Transaction failed!\n")
 
             update_inventory()
@@ -149,22 +171,21 @@ if __name__ == "__main__":
 
             print(f"Alice {item}: {from_items.get(item, 0)}")
             print(f"Bob {item}: {to_items.get(item, 0)}")
+
         else:
-            print(f"One or Both of the players '{from_p}' or '{to_p}' are not found")
+            print(f"One or both players '{from_p}' or '{to_p}' not found")
             print("Transaction failed!\n")
 
-
-        print("=== Inventory Analytics ===")
+        print("\n=== Inventory Analytics ===")
 
         values_dict = {}
         items_dict = {}
 
-        to_get_key = data['players']
+        players = data["players"]
 
-        for key, value in to_get_key.items():
-
-            values_dict[key] = to_get_key[key]['total_value']
-            items_dict[key] = to_get_key[key]['item_count']
+        for key, value in players.items():
+            values_dict[key] = value["total_value"]
+            items_dict[key] = value["item_count"]
 
         max_p_v = max(values_dict, key=values_dict.get)
         max_value = values_dict[max_p_v]
@@ -177,14 +198,10 @@ if __name__ == "__main__":
 
         rarest_items = set()
 
-        for key, value in to_get_key.items():
-
-            for s_key in value['items']:
-
-                if catalog[s_key]['rarity'] == "rare":
-
-                    if s_key not in rarest_items:
-                        rarest_items.add(s_key)
+        for value in players.values():
+            for s_key in value["items"]:
+                if catalog[s_key]["rarity"] == "rare":
+                    rarest_items.add(s_key)
 
         rarest_items_string = ", ".join(rarest_items)
 

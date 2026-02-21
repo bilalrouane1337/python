@@ -17,9 +17,7 @@ if __name__ == "__main__":
         print(f"Program name: {program_name}")
         print(f"Arguments received: {total_args - 1}")
 
-        i = 1
-        while i < total_args:
+        for i in range(1, total_args):
             print(f"Argument {i}: {sys.argv[i]}")
-            i += 1
 
         print(f"Total arguments: {total_args}")
